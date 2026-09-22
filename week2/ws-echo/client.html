@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>D1 Websock Echo Test</title>
-    </head>
-    <body>
-        <h3>WebSock Echo Test</h3>
-        <input id="msg" value="hello from brower">
-        <!-- <input id="msg" value="hello from browser"> -->
-        <button onclick="send()">Send</button>
-        <div id="log"></div>
-        <script>
-            const ws = new WebSocket("ws://192.168.1.16:8765");
+<head>
+    <meta charset="utf-8">
+    <title>D1 WebSocket Echo 测试</title>
+</head>
+<body>
+    <h3>WebSocket Echo 测试</h3>
+    <input id="msg" value="hello from browser">
+    <button onclick="send()">发送</button>
+    <div id="log"></div>
 
-            function log(text) {
-                document.getElementById("log").innerHTML += text +"<br>";
-                console.log(text);
-            }
+    <script>
+        // 把这里换成你虚拟机的真实 IP，用 ip addr 或 ifconfig 查
+        const ws = new WebSocket("ws://192.168.1.16:8765");
 
-            ws.onopen = ()=> log("Connect Success !!!");
-            ws.onmessage = e => log("Recieve Data : " + e.data);
-            ws.onerror = e => log("Connect Error : " + e.data );
-            ws.onclose = ()=> log("Connect Closed Success !!!");
+        function log(text) {
+            document.getElementById("log").innerHTML += text + "<br>";
+            console.log(text);   // 同时打进 F12 控制台
+        }
 
-            function send() {
-                const text = document.getElementById("msg").vaue;
-                <!-- const text = document.getElementById("msg").value; -->
-                <!-- const text = "12312"; -->
-                ws.send(text);
-                log("Send : " + text);
-            }
-        </script>
-    </body>
+        ws.onopen = () => log("✅ 连接已建立");
+        ws.onmessage = e => log("📩 收到: " + e.data);
+        ws.onerror = e => log("❌ 连接出错（检查 IP、端口、防火墙）");
+        ws.onclose = () => log("🔌 连接已关闭");
+
+        function send() {
+            const text = document.getElementById("msg").value;
+            ws.send(text);
+            log("📤 发送: " + text);
+        }
+    </script>
+</body>
 </html>
