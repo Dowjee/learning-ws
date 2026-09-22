@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D1 Websock Echo Test</title>
+    </head>
+    <body>
+        <h3>WebSock Echo Test</h3>
+        <input id="msg" value="hello from brower">
+        <!-- <input id="msg" value="hello from browser"> -->
+        <button onclick="send()">Send</button>
+        <div id="log"></div>
+        <script>
+            const ws = new WebSocket("ws://192.168.1.16:8765");
+
+            function log(text) {
+                document.getElementById("log").innerHTML += text +"<br>";
+                console.log(text);
+            }
+
+            ws.onopen = ()=> log("Connect Success !!!");
+            ws.onmessage = e => log("Recieve Data : " + e.data);
+            ws.onerror = e => log("Connect Error : " + e.data );
+            ws.onclose = ()=> log("Connect Closed Success !!!");
+
+            function send() {
+                const text = document.getElementById("msg").vaue;
+                <!-- const text = document.getElementById("msg").value; -->
+                <!-- const text = "12312"; -->
+                ws.send(text);
+                log("Send : " + text);
+            }
+        </script>
+    </body>
+</html>
